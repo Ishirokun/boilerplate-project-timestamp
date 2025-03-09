@@ -24,6 +24,19 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// API Endpoint for timestamping
+app.get("/api/:date?", (req, res) =>{
+  var date;
+  if (req.params.date == undefined) date = new Date();
+  else {
+    date = new Date(req.params.date)
+    if (date == "Invalid Date"){
+      date = new Date(req.params.date*1)
+    }
+  }
+  if (date.toGMTString() == "Invalid Date") res.json({"error": date.toGMTString()});
+  else res.json({"unix": date.getTime(), "utc": date.toGMTString()});
+})
 
 
 // Listen on port set in environment variable or default to 3000
